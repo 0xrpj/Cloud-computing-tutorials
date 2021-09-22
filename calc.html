@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <title>REST API Calculator</title>
+
+    <script>
+      var RESTAPIURL =
+        "https://vfs4k9kn13.execute-api.us-east-1.amazonaws.com/prod/";
+
+      function calc(operation) {
+        // Read both input values
+        var A = document.getElementById("A").value;
+        var B = document.getElementById("B").value;
+
+        // Display operation and "please wait" message
+        document.getElementById("operation").textContent = operation;
+        document.getElementById("C").textContent = "Please wait...";
+
+        // Fetch data from API
+        fetch(RESTAPIURL + operation + "?A=" + A + "&B=" + B)
+          // Convert response string to json object
+          .then((response) => response.json())
+          .then((response) => {
+            console.log("Got here");
+            console.log(RESTAPIURL + operation + "?A=" + A + "&B=" + B);
+
+            // Display result
+            document.getElementById("C").textContent = response.body;
+          })
+          .catch((err) => {
+            // Handle errors
+            console.log(err);
+          });
+      }
+    </script>
+  </head>
+  <body>
+    A: <input type="text" id="A" /><br />
+    B: <input type="text" id="B" />
+    <p>Operation: <span id="operation"> </span></p>
+    <p>Result: <span id="C"> </span></p>
+    <p>
+      <button type="button" onclick="calc('addition')">Add</button>
+    </p>
+    <p>
+      <button type="button" onclick="calc('subtraction')">Minus</button>
+    </p>
+    <p>
+      <button type="button" onclick="calc('multiplication')">Multiply</button>
+    </p>
+    <p>
+      <button type="button" onclick="calc('division')">Divide</button>
+    </p>
+    <p></p>
+  </body>
+</html>
